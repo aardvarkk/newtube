@@ -11,7 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121204033759) do
+ActiveRecord::Schema.define(:version => 20121204040327) do
+
+  create_table "episodes", :force => true do |t|
+    t.string   "name"
+    t.integer  "number"
+    t.integer  "season"
+    t.integer  "tvdbid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "shows", :force => true do |t|
+    t.string   "name"
+    t.integer  "tvdbid"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "username"
@@ -20,6 +36,16 @@ ActiveRecord::Schema.define(:version => 20121204033759) do
     t.string   "password_salt"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "users_episodes", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "episode_id"
+  end
+
+  create_table "users_shows", :id => false, :force => true do |t|
+    t.integer "user_id"
+    t.integer "show_id"
   end
 
 end
