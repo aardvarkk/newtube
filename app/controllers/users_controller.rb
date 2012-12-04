@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # This is our root, so if we're logged in, we'll redirect to #show
   def new
-    redirect_to user_path(current_user) if logged_in?
+    redirect_to user_shows_path(current_user) if logged_in?
     @user = User.new
   end
 
@@ -28,10 +28,6 @@ class UsersController < ApplicationController
     else
       render :action => 'edit'
     end
-  end
-
-  def show
-
   end
 
 end

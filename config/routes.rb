@@ -1,5 +1,7 @@
 Newtube::Application.routes.draw do
   
+  get "shows/index"
+
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   root :to => 'users#new'
@@ -14,7 +16,9 @@ Newtube::Application.routes.draw do
 
   resources :sessions
 
-  resources :users
+  resources :users do
+    resources :shows
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
