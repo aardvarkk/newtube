@@ -1,7 +1,9 @@
 class UsersController < ApplicationController
   before_filter :login_required, :except => [:new, :create]
 
+  # This is our root, so if we're logged in, we'll redirect to #show
   def new
+    redirect_to user_path(current_user) if logged_in?
     @user = User.new
   end
 
@@ -27,4 +29,9 @@ class UsersController < ApplicationController
       render :action => 'edit'
     end
   end
+
+  def show
+
+  end
+
 end
