@@ -15,7 +15,9 @@ Newtube::Application.routes.draw do
   resources :sessions
 
   resources :users do
-    resources :shows
+    resources :shows do
+      resources :episodes
+    end
   end
 
   # The priority is based upon order of creation:

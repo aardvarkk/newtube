@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121204040327) do
+ActiveRecord::Schema.define(:version => 20121205021930) do
 
   create_table "episodes", :force => true do |t|
     t.string   "name"
@@ -30,6 +30,20 @@ ActiveRecord::Schema.define(:version => 20121204040327) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "user_follows", :id => false, :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "show_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_watches", :id => false, :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "episode_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "username"
     t.string   "email"
@@ -37,16 +51,6 @@ ActiveRecord::Schema.define(:version => 20121204040327) do
     t.string   "password_salt"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-  end
-
-  create_table "users_episodes", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "episode_id"
-  end
-
-  create_table "users_shows", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "show_id"
   end
 
 end

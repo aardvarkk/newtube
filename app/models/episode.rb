@@ -1,6 +1,6 @@
 class Episode < ActiveRecord::Base
   belongs_to :show
-  has_and_belongs_to_many :users, join_table: :users_episodes
+  has_many :user_watches
 
   attr_accessible :name, :number, :season, :tvdbid
 end
