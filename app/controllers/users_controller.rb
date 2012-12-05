@@ -12,13 +12,13 @@ class UsersController < ApplicationController
 
     # Can only create if we're passed an ID...
     if params[:add].blank?
-      redirect_to index_path(current_user), alert: 'Must provide a show ID' 
+      redirect_to index_path, alert: 'Must provide a show ID' 
       return
     end
 
     # Do we already have it?
     if UserFollow.joins(:show).where(shows: { tvdbid: params[:add] }).present?
-      redirect_to index_path(current_user), alert: 'Show already followed' 
+      redirect_to index_path, alert: 'Show already followed' 
       return
     end
 
@@ -48,13 +48,13 @@ class UsersController < ApplicationController
     current_user.user_follows.create(show_id: show.id)
 
     # If it does exist, we'll make a call out for the data on it
-    redirect_to index_path(current_user), notice: 'Show successfully added'
+    redirect_to index_path, notice: 'Show successfully added'
 
   end
 
   def remove_show
     current_user.user_follows.where(show_id: params[:remove]).delete_all
-    redirect_to index_path(current_user), notice: 'Show successfully removed'
+    redirect_to index_path, notice: 'Show successfully removed'
   end
 
   # This is our root, so if we're logged in, we'll redirect to #show

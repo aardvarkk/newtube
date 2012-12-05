@@ -12,11 +12,11 @@ Newtube::Application.routes.draw do
 
   match 'login' => 'sessions#new', as: :login
 
-  match 'users/:id' => 'users#index', as: :index
+  match 'user' => 'users#index', as: :index
 
-  match 'users/:id/add_show' => 'users#add_show', as: :add_show
+  match 'user/add_show' => 'users#add_show', as: :add_show
   
-  match 'users/:id/remove_show' => 'users#remove_show', as: :remove_show
+  match 'user/remove_show' => 'users#remove_show', as: :remove_show
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
