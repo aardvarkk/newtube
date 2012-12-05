@@ -2,23 +2,21 @@ Newtube::Application.routes.draw do
   
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'users#new'
+  root to: 'users#index'
 
-  match 'user/edit' => 'users#edit', :as => :edit_current_user
+  match 'user/edit' => 'users#edit', as: :edit_current_user
 
-  match 'signup' => 'users#new', :as => :signup
+  match 'signup' => 'users#new', as: :signup
 
-  match 'logout' => 'sessions#destroy', :as => :logout
+  match 'logout' => 'sessions#destroy', as: :logout
 
-  match 'login' => 'sessions#new', :as => :login
+  match 'login' => 'sessions#new', as: :login
 
-  resources :sessions
+  match 'users/:id' => 'users#index', as: :index
 
-  resources :users do
-    resources :shows do
-      resources :episodes
-    end
-  end
+  match 'users/:id/add_show' => 'users#add_show', as: :add_show
+  
+  match 'users/:id/remove_show' => 'users#remove_show', as: :remove_show
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
