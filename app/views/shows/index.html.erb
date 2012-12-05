@@ -9,5 +9,30 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
 
 <%# Display the shows for this user -- they'll be set to @shows %>
 <% @shows.each do |s| %>
-  <%= content_tag :h1, s %>
+  <%= content_tag :h1, s.name %>
+
+  <%# Show the episodes in a table %>
+  <table>
+    <thead>
+      <tr>
+        <th>Season</th>
+        <th>Episode</th>
+        <th>Name</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% s.episodes.each do |e| %>
+      <tr>
+        <%= content_tag :td, e.season %>
+        <%= content_tag :td, e.number %>
+        <%= content_tag :td, e.name %>
+        <%= content_tag :td, '' %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
 <% end %>
+
+<%#= debug @episodes %>

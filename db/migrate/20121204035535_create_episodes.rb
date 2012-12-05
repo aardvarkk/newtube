@@ -5,7 +5,8 @@ class CreateEpisodes < ActiveRecord::Migration
       t.integer :number
       t.integer :season
       t.integer :tvdbid
-
+      t.integer :show_id
+      
       t.timestamps
     end
   end
