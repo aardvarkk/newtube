@@ -3,9 +3,43 @@ class UsersController < ApplicationController
   before_filter :login_required, :except => [:new, :create]
 
   def index
-    # Return all relevant data
-    @follows = current_user.user_follows
-    @watches = current_user.user_watches
+
+    # What shows does this user follow?
+    follow_shows = current_user.shows.order(:name)
+
+    # Go through each follow, storing the show name
+    @data = Array.new
+    follow_shows.each do |fs|
+
+      # Get all of the episode info
+      episodes = Array.new
+      Episode.joins('left join user_watches on id = user_watches.episode_id').order(:season, :number).where(show_id: fs.id).each do |e|
+        episode = Hash.new
+        episode[:id]      = e.id
+        episode[:season]  = e.season
+        episode[:number]  = e.number
+        episode[:name]    = e.name
+        episode[:watched] = e.user_watches.where(user_id: current_user)
+        episodes << episode
+      end
+
+      show_data = Hash.new
+      show_data[:id]       = fs.id
+      show_data[:name]     = fs.name
+      show_data[:episodes] = episodes
+
+      # Add to our dataset
+      @data << show_data
+
+    end
+
+  end
+
+  def watch_show
+    params[:watched_ids].each do |wid|
+      UserWatch.find_or_create_by_user_id_and_episode_id(user_id: current_user.id, episode_id: wid)
+    end
+    redirect_to index_path
   end
 
   def add_show

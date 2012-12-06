@@ -1,8 +1,12 @@
 require 'bcrypt'
 
 class User < ActiveRecord::Base
+  
   has_many :user_follows
+  has_many :shows, through: :user_follows
+
   has_many :user_watches
+  has_many :episodes, through: :user_watches
   
   # new columns need to be added here to be writable through mass assignment
   attr_accessible :username, :email, :password, :password_confirmation

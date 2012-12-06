@@ -8,12 +8,12 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
 <% end %>
 
 <%# Display the follows for this user %>
-<% @follows.joins(:show).order(:name).each do |f| %>
-  <%= content_tag :h1, f.show.name %>
-  <%= link_to 'Remove Series', remove_show_path(current_user, remove: f.show) %>
+<% @data.each do |d| %>
+  <%= content_tag :h1, d[:name] %>
+  <%= link_to 'Remove Series', remove_show_path(current_user, remove: d[:id]) %>
 
   <%# Show the episodes in a table %>
-  <%= form_tag 'hi' do %>
+  <%= form_tag watch_show_path do %>
     <table>
       <thead>
         <tr>
@@ -25,13 +25,13 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
         </tr>
       </thead>
       <tbody>
-        <% f.show.episodes.order(:season, :number).each do |e| %>
+        <% d[:episodes].each do |e| %>
           <tr>
-            <td><%= check_box_tag 'watched_ids[]', e.id %></td>
-            <%= content_tag :td, e.season %>
-            <%= content_tag :td, e.number %>
-            <%= content_tag :td, e.name %>
-            <%= content_tag :td, @watches.where(episode_id: e.id).empty? ? 'Unwatched' : 'Watched' %>
+            <td><%= check_box_tag 'watched_ids[]', e[:id] %></td>
+            <%= content_tag :td, e[:season] %>
+            <%= content_tag :td, e[:number] %>
+            <%= content_tag :td, e[:name]   %>
+            <%= content_tag :td, e[:watched].blank? ? 'Unwatched' : 'Watched' %>
           </tr>
         <% end %>
       </tbody>
