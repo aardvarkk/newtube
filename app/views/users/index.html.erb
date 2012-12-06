@@ -13,7 +13,7 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
   <%= link_to 'Remove Series', remove_show_path(current_user, remove: d[:id]) %>
 
   <%# Show the episodes in a table %>
-  <%= form_tag watch_show_path do %>
+  <%= form_tag set_show_status_path do %>
     <table>
       <thead>
         <tr>
@@ -36,7 +36,8 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
         <% end %>
       </tbody>
     </table>
-    <%= submit_tag 'Mark as Watched' %>
+    Mark as <%= select_tag 'status', options_for_select([['Watched','1'],['Unwatched','0']]) %>
+    <%= submit_tag 'Save Status' %>
   <% end %>
 
 <% end %>

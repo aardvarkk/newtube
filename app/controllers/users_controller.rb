@@ -35,9 +35,13 @@ class UsersController < ApplicationController
 
   end
 
-  def watch_show
-    params[:watched_ids].each do |wid|
-      UserWatch.find_or_create_by_user_id_and_episode_id(user_id: current_user.id, episode_id: wid)
+  def set_show_status
+    if params[:status] == '1'
+      params[:watched_ids].each do |wid|
+        UserWatch.find_or_create_by_user_id_and_episode_id(user_id: current_user.id, episode_id: wid)
+      end
+    else
+      UserWatch.where(user_id: current_user.id, episode_id: params[:watched_ids]).delete_all
     end
     redirect_to index_path
   end
@@ -87,7 +91,12 @@ class UsersController < ApplicationController
   end
 
   def remove_show
-    current_user.user_follows.where(show_id: params[:remove]).delete_all
+    # Get the show we're trying to remove
+    show = Show.find_by_id(params[:remove])
+    # Remove any episode watches for this show
+    UserWatch.where(user_id: current_user.id, episode_id: show.episodes).delete_all
+    # Remove the show follow itself
+    UserFollow.where(user_id: current_user.id, show_id: show.id).delete_all
     redirect_to index_path, notice: 'Show successfully removed'
   end
 
