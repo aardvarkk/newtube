@@ -36,13 +36,29 @@ class UsersController < ApplicationController
 
   end
 
-  def add_episodes(tvdb)
+  # We need to know the show id so that we can search to see if this episode already exists
+  def add_episodes(tvdb, show_id)
     # Add episodes to the show
     episodes = Array.new
+
+    # Go through all episodes returned to us
     tvdb['Data']['Episode'].each do |e|
-      episode = Episode.find_or_create_by_name_and_number_and_season_and_tvdbid_and_first_aired({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id'], first_aired: e['FirstAired']})
+      
+      # First try to find it -- if it exists already, we'll just update it
+      episode = Episode.find_by_show_id_and_season_and_number(show_id, e['SeasonNumber'], e['EpisodeNumber'])
+      if episode
+        logger.debug "Found existing record for season #{e['SeasonNumber']} episode #{e['EpisodeNumber']}"
+        episode.name        = e['EpisodeName']
+        episode.tvdbid      = e['id']
+        episode.first_aired = e['FirstAired']        
+      else
+        logger.debug "Creating new record for season #{e['SeasonNumber']} episode #{e['EpisodeNumber']}"
+        episode = Episode.create({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id'], first_aired: e['FirstAired']})
+      end
       episodes << episode
+
     end
+
     return episodes
   end
 
@@ -54,7 +70,7 @@ class UsersController < ApplicationController
 
     # Try to do a pull from thetvdb.com
     tvdb = tvdb_query_series_all(show.tvdbid)
-    show.episodes = add_episodes(tvdb)
+    show.episodes = add_episodes(tvdb, show.id)
 
     redirect_to users_path, notice: 'Show successfully updated'
   end
@@ -98,7 +114,7 @@ class UsersController < ApplicationController
       show = Show.create({name: tvdb['Data']['Series']['SeriesName'], tvdbid: tvdb['Data']['Series']['id']})
       
       # Then add the episodes
-      show.episodes = add_episodes(tvdb)
+      show.episodes = add_episodes(tvdb, show.id)
 
     end
 
