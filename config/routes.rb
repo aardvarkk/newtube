@@ -20,6 +20,8 @@ Newtube::Application.routes.draw do
 
   match 'user/set_show_status' => 'users#set_show_status', as: :set_show_status, via: :post
 
+  match 'user/update_show' => 'users#update_show', as: :update_show
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

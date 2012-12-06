@@ -35,6 +35,29 @@ class UsersController < ApplicationController
 
   end
 
+  def add_episodes(tvdb)
+    # Add episodes to the show
+    episodes = Array.new
+    tvdb['Data']['Episode'].each do |e|
+      episode = Episode.find_or_create_by_name_and_number_and_season_and_tvdbid({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id']})
+      episodes << episode
+    end
+    return episodes
+  end
+
+  # Must have a valid show id -- we already have the show in our database, we just want to find new episodes
+
+  def update_show
+    show = Show.find_by_id(params[:update])
+    redirect_to index_path, alert: 'Unable to update show' unless show
+
+    # Try to do a pull from thetvdb.com
+    tvdb = tvdb_query_series_all(show.tvdbid)
+    show.episodes = add_episodes(tvdb)
+
+    redirect_to index_path, notice: 'Show successfully updated'
+  end
+
   def set_show_status
     if params[:status] == '1'
       params[:watched_ids].each do |wid|
@@ -69,16 +92,12 @@ class UsersController < ApplicationController
       
       # Try to do a pull from thetvdb.com
       tvdb = tvdb_query_series_all(params[:add])
-      logger.debug tvdb
 
       # First off, add the show itself
       show = Show.create({name: tvdb['Data']['Series']['SeriesName'], tvdbid: tvdb['Data']['Series']['id']})
-
-      # Add episodes to the show
-      tvdb['Data']['Episode'].each do |e|
-        episode = Episode.create({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id']})
-        show.episodes << episode
-      end
+      
+      # Then add the episodes
+      show.episodes = add_episodes(tvdb)
 
     end
 
