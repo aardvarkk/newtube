@@ -8,6 +8,7 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
 <% end %>
 
 <%= link_to 'Show All', users_path(show_all: '1') %>
+<%= link_to 'Show Unwatched', users_path %>
 
 <%# Display the follows for this user %>
 <% @data.each do |d| %>
