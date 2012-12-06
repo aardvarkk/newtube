@@ -21,7 +21,7 @@ class UsersController < ApplicationController
         episode[:name]        = e.name
         episode[:watched]     = e.user_watches.where(user_id: current_user)
         episode[:first_aired] = e.first_aired
-        episodes << episode
+        episodes << episode if params[:show_all].present? || episode[:watched].blank?
       end
 
       show_data = Hash.new
