@@ -15,11 +15,12 @@ class UsersController < ApplicationController
       episodes = Array.new
       Episode.joins('left join user_watches on id = user_watches.episode_id').order(:season, :number).where(show_id: fs.id).each do |e|
         episode = Hash.new
-        episode[:id]      = e.id
-        episode[:season]  = e.season
-        episode[:number]  = e.number
-        episode[:name]    = e.name
-        episode[:watched] = e.user_watches.where(user_id: current_user)
+        episode[:id]          = e.id
+        episode[:season]      = e.season
+        episode[:number]      = e.number
+        episode[:name]        = e.name
+        episode[:watched]     = e.user_watches.where(user_id: current_user)
+        episode[:first_aired] = e.first_aired
         episodes << episode
       end
 
@@ -39,7 +40,7 @@ class UsersController < ApplicationController
     # Add episodes to the show
     episodes = Array.new
     tvdb['Data']['Episode'].each do |e|
-      episode = Episode.find_or_create_by_name_and_number_and_season_and_tvdbid({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id']})
+      episode = Episode.find_or_create_by_name_and_number_and_season_and_tvdbid_and_first_aired({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id'], first_aired: e['FirstAired']})
       episodes << episode
     end
     return episodes
@@ -49,13 +50,13 @@ class UsersController < ApplicationController
 
   def update_show
     show = Show.find_by_id(params[:update])
-    redirect_to index_path, alert: 'Unable to update show' unless show
+    redirect_to users_path, alert: 'Unable to update show' unless show
 
     # Try to do a pull from thetvdb.com
     tvdb = tvdb_query_series_all(show.tvdbid)
     show.episodes = add_episodes(tvdb)
 
-    redirect_to index_path, notice: 'Show successfully updated'
+    redirect_to users_path, notice: 'Show successfully updated'
   end
 
   def set_show_status
@@ -66,20 +67,20 @@ class UsersController < ApplicationController
     else
       UserWatch.where(user_id: current_user.id, episode_id: params[:watched_ids]).delete_all
     end
-    redirect_to index_path
+    redirect_to users_path
   end
 
   def add_show
 
     # Can only create if we're passed an ID...
     if params[:add].blank?
-      redirect_to index_path, alert: 'Must provide a show ID' 
+      redirect_to users_path, alert: 'Must provide a show ID' 
       return
     end
 
     # Do we already have it?
     if UserFollow.joins(:show).where(shows: { tvdbid: params[:add] }).present?
-      redirect_to index_path, alert: 'Show already followed' 
+      redirect_to users_path, alert: 'Show already followed' 
       return
     end
 
@@ -105,7 +106,7 @@ class UsersController < ApplicationController
     current_user.user_follows.create(show_id: show.id)
 
     # If it does exist, we'll make a call out for the data on it
-    redirect_to index_path, notice: 'Show successfully added'
+    redirect_to users_path, notice: 'Show successfully added'
 
   end
 
@@ -116,7 +117,7 @@ class UsersController < ApplicationController
     UserWatch.where(user_id: current_user.id, episode_id: show.episodes).delete_all
     # Remove the show follow itself
     UserFollow.where(user_id: current_user.id, show_id: show.id).delete_all
-    redirect_to index_path, notice: 'Show successfully removed'
+    redirect_to users_path, notice: 'Show successfully removed'
   end
 
   # This is our root, so if we're logged in, we'll redirect to #show

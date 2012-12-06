@@ -12,7 +12,9 @@ Newtube::Application.routes.draw do
 
   match 'login' => 'sessions#new', as: :login
 
-  match 'user' => 'users#index', as: :index
+  resources :sessions
+
+  resources :users
 
   match 'user/add_show' => 'users#add_show', as: :add_show
   
