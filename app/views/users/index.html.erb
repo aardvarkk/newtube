@@ -20,7 +20,7 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
     <table>
       <thead>
         <tr>
-          <th><!--Mark--></th>
+          <th><%= check_box_tag nil, nil, false, class: 'select_all' %></th>
           <th>Season</th>
           <th>Episode</th>
           <th>Name</th>
