@@ -1,4 +1,9 @@
-Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_user) %>
+<div>
+  Hello <%= current_user.username %>!
+  <%= link_to 'Log out', logout_path(current_user) %>
+  <%= link_to 'Show All', users_path(show_all: '1') %>
+  <%= link_to 'Show Unwatched', users_path %>
+</div>
 
 <%# Show a form for adding a new series %>
 <%= form_tag add_show_path do %>
@@ -6,9 +11,6 @@ Hello <%= current_user.username %>! <%= link_to 'Log out', logout_path(current_u
   <%= text_field_tag(:add) %>
   <%= submit_tag('Add') %>
 <% end %>
-
-<%= link_to 'Show All', users_path(show_all: '1') %>
-<%= link_to 'Show Unwatched', users_path %>
 
 <%# Display the follows for this user %>
 <% @data.each do |d| %>
