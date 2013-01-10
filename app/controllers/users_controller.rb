@@ -43,10 +43,7 @@ class UsersController < ApplicationController
     episodes = Array.new
 
     # Go through all episodes returned to us
-    tvdb['Data'].each_pair do |k,e|
-
-      # Only care about episodes
-      next unless k == 'Episode'
+    Array.wrap(tvdb['Data']['Episode']).each do |e|
 
       # Find or create, and then update
       episode = Episode.find_or_create_by_show_id_and_season_and_number(show_id, e['SeasonNumber'], e['EpisodeNumber'])
