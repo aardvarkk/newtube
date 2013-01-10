@@ -38,25 +38,26 @@ class UsersController < ApplicationController
 
   # We need to know the show id so that we can search to see if this episode already exists
   def add_episodes(tvdb, show_id)
+
     # Add episodes to the show
     episodes = Array.new
 
     # Go through all episodes returned to us
-    tvdb['Data']['Episode'].each do |e|
+    tvdb['Data'].each_pair do |k,e|
+
+      # Only care about episodes
+      next unless k == 'Episode'
+
+      # Find or create, and then update
+      episode = Episode.find_or_create_by_show_id_and_season_and_number(show_id, e['SeasonNumber'], e['EpisodeNumber'])
       
-      # First try to find it -- if it exists already, we'll just update it
-      episode = Episode.find_by_show_id_and_season_and_number(show_id, e['SeasonNumber'], e['EpisodeNumber'])
+      # Update the info
+      episode.name        = e['EpisodeName']
+      episode.tvdbid      = e['id']
+      episode.first_aired = e['FirstAired']
+      episode.save
       
-      if episode.name
-        logger.debug "Found existing record for season #{e['SeasonNumber']} episode #{e['EpisodeNumber']}"
-        episode.name        = e['EpisodeName']
-        episode.tvdbid      = e['id']
-        episode.first_aired = e['FirstAired']
-        episode.save
-      else
-        logger.debug "Creating new record for season #{e['SeasonNumber']} episode #{e['EpisodeNumber']}"
-        episode = Episode.create({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id'], first_aired: e['FirstAired']})
-      end
+      # Put it into our episodes group
       episodes << episode
 
     end
