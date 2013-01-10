@@ -46,11 +46,13 @@ class UsersController < ApplicationController
       
       # First try to find it -- if it exists already, we'll just update it
       episode = Episode.find_by_show_id_and_season_and_number(show_id, e['SeasonNumber'], e['EpisodeNumber'])
-      if episode
+      
+      if episode.name
         logger.debug "Found existing record for season #{e['SeasonNumber']} episode #{e['EpisodeNumber']}"
         episode.name        = e['EpisodeName']
         episode.tvdbid      = e['id']
-        episode.first_aired = e['FirstAired']        
+        episode.first_aired = e['FirstAired']
+        episode.save
       else
         logger.debug "Creating new record for season #{e['SeasonNumber']} episode #{e['EpisodeNumber']}"
         episode = Episode.create({name: e['EpisodeName'], number: e['EpisodeNumber'], season: e['SeasonNumber'], tvdbid: e['id'], first_aired: e['FirstAired']})
