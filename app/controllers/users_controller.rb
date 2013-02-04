@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
       # Get all of the episode info
       episodes = Array.new
-      Episode.joins('left join user_watches on id = user_watches.episode_id').order(:season, :number).where(show_id: fs.id).each do |e|
+      Episode.joins('left join user_watches on id = user_watches.episode_id').order(:first_aired, :season, :number).where(show_id: fs.id).each do |e|
         episode = Hash.new
         episode[:id]          = e.id
         episode[:season]      = e.season
