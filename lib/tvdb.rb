@@ -15,7 +15,7 @@ module TVDB
   end
 
   def tvdb_query_series_all(series)
-    uri = URI(api_root + '/series/' + series.to_s + '/all/')
+    uri = URI(api_root + '/series/' + series.to_s + '/all/' + 'en.xml')
     logger.debug uri
     Hash.from_xml(Net::HTTP.get(uri))
   end
