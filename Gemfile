@@ -32,7 +32,12 @@ gem 'bcrypt-ruby'
 # gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+group :development do
+  gem 'capistrano', github: 'capistrano'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rails'
+  gem 'capistrano-rvm'
+end
 
 # To use debugger
 # gem 'debugger'

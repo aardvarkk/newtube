@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/capistrano/capistrano.git
+  revision: ec44065573e6a8ebaab484e243712e363ebd2065
+  specs:
+    capistrano (3.3.3)
+      capistrano-stats (~> 1.0.3)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -33,6 +43,16 @@ GEM
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
     builder (3.0.4)
+    capistrano-bundler (1.1.3)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-rails (1.1.2)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
+    capistrano-stats (1.0.3)
     coffee-rails (3.2.1)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0.beta)
@@ -40,6 +60,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    colorize (0.7.3)
     erubis (2.7.0)
     execjs (2.2.2)
     hike (1.2.3)
@@ -57,6 +78,9 @@ GEM
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     multi_json (1.10.1)
+    net-scp (1.2.1)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.9.1)
     nifty-generators (0.4.6)
     pg (0.17.1)
     polyglot (0.3.5)
@@ -95,6 +119,10 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    sshkit (1.5.1)
+      colorize
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     thor (0.19.1)
     tilt (1.4.1)
     treetop (1.4.15)
@@ -110,6 +138,10 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby
+  capistrano!
+  capistrano-bundler
+  capistrano-rails
+  capistrano-rvm
   coffee-rails
   jquery-rails
   mocha
