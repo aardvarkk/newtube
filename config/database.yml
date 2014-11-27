@@ -41,6 +41,7 @@ test:
   encoding: unicode
   database: newtube_test
   pool: 5
+  min_messages: warning
 
 production:
   adapter: postgresql
