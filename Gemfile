@@ -32,6 +32,7 @@ gem 'bcrypt-ruby'
 # gem 'unicorn'
 
 # Deploy with Capistrano
+gem 'therubyracer', platforms: :ruby
 group :development do
   gem 'capistrano', github: 'capistrano'
   gem 'capistrano-bundler'
