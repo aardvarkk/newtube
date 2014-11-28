@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
+  include ERB::Util
   include TVDB
   before_filter :login_required, :except => [:new, :create]
 
-  def index
+  def show
 
     # What shows does this user follow?
     follow_shows = current_user.shows.order(:name)
@@ -87,7 +88,7 @@ class UsersController < ApplicationController
   end
 
   def search_show
-    @tvdb = tvdb_search_series(params[:search])
+    @tvdb = tvdb_search_series(URI.escape(params[:search] || ''))
   end
 
   def add_show
@@ -99,8 +100,8 @@ class UsersController < ApplicationController
     end
 
     # Do we already have it?
-    if UserFollow.joins(:show).where(shows: { tvdbid: params[:add] }).present?
-      redirect_to users_path, alert: 'Show already followed' 
+    if UserFollow.joins(:show).where(user_id: current_user, shows: { tvdbid: params[:add] }).present?
+      redirect_to user_path(current_user), alert: 'Show already followed' 
       return
     end
 
@@ -126,7 +127,7 @@ class UsersController < ApplicationController
     current_user.user_follows.create(show_id: show.id)
 
     # If it does exist, we'll make a call out for the data on it
-    redirect_to users_path, notice: 'Show successfully added'
+    redirect_to user_path(current_user), notice: 'Show successfully added'
 
   end
 

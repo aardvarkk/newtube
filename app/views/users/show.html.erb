@@ -1,16 +1,4 @@
-<div>
-  Hello <%= current_user.username %>!
-  <%= link_to 'Log out', logout_path(current_user) %>
-  <%= link_to 'Show All', users_path(show_all: '1') %>
-  <%= link_to 'Show Unwatched', users_path %>
-</div>
-
-<%# Search for a series %>
-<%= form_tag search_show_users_path do %>
-  <%= label_tag(:search, 'Search Series') %>
-  <%= text_field_tag(:search) %>
-  <%= submit_tag('Search') %>
-<% end %>
+<%= render 'menu' %>
 
 <%# Show a form for adding a new series %>
 <%#= form_tag add_show_path do %>

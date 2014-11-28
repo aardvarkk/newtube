@@ -1,5 +1,30 @@
-<%= debug @tvdb %>
+<%#= debug @tvdb %>
 
-<%= @tvdb['Data']['Series'].each do |s| %>
-  <%= image_tag get_banner_uri(s['banner']) %>
+<%= render 'menu' %>
+
+<%# Search for a series %>
+<%= form_tag search_show_users_path, method: :get do %>
+  <%= label_tag(:search, 'Search Series') %>
+  <%= text_field_tag(:search) %>
+  <%= submit_tag('Search') %>
+<% end %>
+
+<%#= debug @tvdb %>
+
+<% if @tvdb['Data'].present? %>
+  <table>
+
+    <% Array.wrap(@tvdb['Data']['Series']).each do |s| %>
+      <tr>
+        <td>
+          <%= s['SeriesName'] %>
+        </td>
+        <td>
+          <%= button_to 'Add', add_show_path(add: s['seriesid']) %>
+        </td>
+      </tr>
+      <%#= image_tag get_banner_uri(s['banner']) %>
+    <% end %>
+
+  </table>
 <% end %>
