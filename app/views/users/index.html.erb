@@ -5,12 +5,19 @@
   <%= link_to 'Show Unwatched', users_path %>
 </div>
 
-<%# Show a form for adding a new series %>
-<%= form_tag add_show_path do %>
-  <%= label_tag(:add, 'Add Series') %>
-  <%= text_field_tag(:add) %>
-  <%= submit_tag('Add') %>
+<%# Search for a series %>
+<%= form_tag search_show_users_path do %>
+  <%= label_tag(:search, 'Search Series') %>
+  <%= text_field_tag(:search) %>
+  <%= submit_tag('Search') %>
 <% end %>
+
+<%# Show a form for adding a new series %>
+<%#= form_tag add_show_path do %>
+  <%#= label_tag(:add, 'Add Series') %>
+  <%#= text_field_tag(:add) %>
+  <%#= submit_tag('Add') %>
+<%# end %>
 
 <%# Display the follows for this user %>
 <% @data.each do |d| %>

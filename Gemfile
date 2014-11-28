@@ -34,6 +34,8 @@ gem 'bcrypt-ruby'
 # Deploy with Capistrano
 gem 'therubyracer', platforms: :ruby
 group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'capistrano', github: 'capistrano'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'

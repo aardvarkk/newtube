@@ -14,10 +14,14 @@ Newtube::Application.routes.draw do
 
   resources :sessions
 
-  resources :users
+  resources :users do
+    collection do
+      post 'search_show'
+    end
+  end
 
   match 'user/add_show' => 'users#add_show', as: :add_show
-  
+
   match 'user/remove_show' => 'users#remove_show', as: :remove_show
 
   match 'user/set_show_status' => 'users#set_show_status', as: :set_show_status, via: :post

@@ -86,6 +86,10 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def search_show
+    @tvdb = tvdb_search_series(params[:search])
+  end
+
   def add_show
 
     # Can only create if we're passed an ID...

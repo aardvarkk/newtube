@@ -1,0 +1,5 @@
+<%= debug @tvdb %>
+
+<%= @tvdb['Data']['Series'].each do |s| %>
+  <%= image_tag get_banner_uri(s['banner']) %>
+<% end %>
