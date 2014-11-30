@@ -38,6 +38,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'capistrano', github: 'capistrano'
   gem 'capistrano-bundler'
+  gem 'capistrano-passenger'
   gem 'capistrano-rails'
   gem 'capistrano-rvm'
 end
@@ -48,5 +49,3 @@ end
 gem 'nifty-generators', :group => :development
 
 gem "mocha", :group => :test
-
-gem 'capistrano-passenger'
