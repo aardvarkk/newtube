@@ -48,3 +48,5 @@ end
 gem 'nifty-generators', :group => :development
 
 gem "mocha", :group => :test
+
+gem 'capistrano-passenger'
